@@ -1,0 +1,3 @@
+#!/bin/sh
+
+setxkbmap -print | xkbcomp - - | xkbprint -label symbols -color - - | ps2pdf - > xkblayout.pdf
