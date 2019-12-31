@@ -1,0 +1,10 @@
+#!/bin/sh
+
+cmd=$1
+control=/sys/kernel/debug/vgaswitcheroo/switch
+
+if [ -z "$cmd" ]; then
+    cat "$control"
+else
+    printf "$cmd" > "$control"
+fi

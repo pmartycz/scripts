@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Make application default for all supported mime types
+
+xdg-mime default "${1##*/}" `sed -n 's/;/ /g; s/^MimeType=//p' < "$1"`

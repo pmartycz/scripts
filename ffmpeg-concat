@@ -1,0 +1,3 @@
+ #!/bin/sh
+ 
+ printf "file '%s'\n" "$@" | ffmpeg -protocol_whitelist pipe,file -f concat -i - -c copy out.mkv
