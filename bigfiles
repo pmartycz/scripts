@@ -1,0 +1,5 @@
+#!/bin/sh
+
+limit=${1:-10}
+
+find . -type f -exec du -ah {} + | sort -rh | head -n "$limit"
