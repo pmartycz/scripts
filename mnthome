@@ -1,0 +1,29 @@
+#!/bin/sh
+
+current_user=$PAM_USER
+
+exec 3<&0
+
+while IFS=':' read user user_device; do
+  if [ "$user" != "$current_user" ]; then
+    continue
+  fi
+
+  dm_crypt_name=home_$user
+  user_home=`getent passwd "$user" | cut -f6 -d:`
+  
+  if systemctl -q is-active "$user_home"; then
+    # Already mounted
+    exit 0
+  fi
+  
+  if ! cryptsetup status "$dm_crypt_name" > /dev/null; then
+    cryptsetup open "$user_device" "$dm_crypt_name" <&3 || exit $?
+  fi
+
+  systemd-mount "/dev/mapper/$dm_crypt_name" "$user_home"
+
+  exit $?
+done < /usr/local/etc/mnthome.conf
+
+exit 0
