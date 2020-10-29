@@ -1,0 +1,9 @@
+#!/bin/sh
+
+dpkg-query --listfiles "$@" |
+sed -n 's:^/usr/share/man/man[1-9]/\(.*\)\.\([1-9][^.]*\)\.gz:\1 \2:p' |
+sort |
+while IFS=' ' read -r page section
+do
+    whatis -s "$section" "$page"
+done
